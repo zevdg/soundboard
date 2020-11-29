@@ -16,6 +16,11 @@
 <style global>
   @import "carbon-components-svelte/css/g100";
 
+  /* permanently hide hamburger menu */
+  header > button:nth-of-type(1) {
+    display: none !important;
+  }
+
   #app-content {
     height: 100%;
   }
