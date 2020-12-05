@@ -2,9 +2,8 @@
   import SoundTile from "./SoundTile.svelte";
 
   export let id;
-  export let edit;
-
-  let sounds = new Array(9);
+  export let sounds;
+  export let getRecorder;
 
   // TODO record on button press and hold
   const sleep = (time) => new Promise((resolve) => setTimeout(resolve, time));
@@ -19,6 +18,13 @@
     await sleep(3000);
     actionButton.disabled = false;
   };
+  function indexedGetRecorder(idx) {
+    if (getRecorder) {
+      return () => {
+        return getRecorder(idx);
+      };
+    }
+  }
 </script>
 
 <style>
@@ -33,7 +39,7 @@
 </style>
 
 <div class="board">
-  {#each sounds as sound, i}
-    <SoundTile idx={i} sound="TODO" {edit} />
+  {#each sounds as sound, idx}
+    <SoundTile sound={sounds[idx]} getRecorder={indexedGetRecorder(idx)} />
   {/each}
 </div>

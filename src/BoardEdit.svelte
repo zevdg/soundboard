@@ -1,12 +1,22 @@
 <script>
+  import { recordAudio } from "./record";
   import Board from "./Board.svelte";
   import { Button } from "carbon-components-svelte";
   import { navigate } from "svelte-routing";
 
   export let id;
+
+  let sounds = new Array(9);
+  let recorders = new Array(9);
+
+  async function getRecorder(idx) {
+    if (!recorders[idx] || recorders[idx].getState() == "inactive") {
+      recorders[idx] = await recordAudio();
+    }
+    return recorders[idx];
+  }
 </script>
 
-<h1>I am board id {id}</h1>
-<p>Press and hold microphone to record.</p>
-<Board {id} edit={true} />
+<p>Press and hold to record.</p>
+<Board {id} {sounds} {getRecorder} />
 <Button on:click={() => navigate(`/b/${id}`)}>Save</Button>
