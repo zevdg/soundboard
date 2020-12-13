@@ -1,9 +1,12 @@
 <script>
   import SoundTile from "./SoundTile.svelte";
+  import { createEventDispatcher } from "svelte";
 
   export let id;
   export let sounds;
   export let getRecorder;
+
+  const dispatch = createEventDispatcher();
 
   // TODO record on button press and hold
   const sleep = (time) => new Promise((resolve) => setTimeout(resolve, time));
@@ -40,6 +43,9 @@
 
 <div class="board">
   {#each sounds as sound, idx}
-    <SoundTile sound={sounds[idx]} getRecorder={indexedGetRecorder(idx)} />
+    <SoundTile
+      sound={sounds[idx]}
+      getRecorder={indexedGetRecorder(idx)}
+      on:clear={() => dispatch('clear', { idx })} />
   {/each}
 </div>

@@ -3,7 +3,7 @@
   import { v4 as uuidv4 } from "uuid";
   import { navigate } from "svelte-routing";
 
-  function createBoard() {
+  async function createBoard() {
     navigate(`/b/${uuidv4()}/edit`);
   }
 </script>

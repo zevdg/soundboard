@@ -1,4 +1,5 @@
 <script>
+  import { createEventDispatcher } from "svelte";
   import { ClickableTile } from "carbon-components-svelte";
   import Icon from "fa-svelte";
   import { faMicrophoneAlt } from "@fortawesome/free-solid-svg-icons/faMicrophoneAlt";
@@ -6,6 +7,17 @@
   import { faTimes } from "@fortawesome/free-solid-svg-icons/faTimes";
   export let getRecorder;
   export let sound;
+
+  const dispatch = createEventDispatcher();
+
+  const audio = new Audio();
+  $: if (sound) {
+    console.log({ sound });
+    const audioUrl = URL.createObjectURL(sound.blob);
+    audio.src = audioUrl;
+    console.log({ audio });
+  }
+
   let recording = false;
 
   async function recordStart(event) {
@@ -45,7 +57,7 @@
 
 <div class="SoundTile">
   {#if sound}
-    <div class="tileWrapper" on:click={sound.play}>
+    <div class="tileWrapper" on:click={() => audio.play()}>
       <ClickableTile>
         <Icon class="icon" icon={faPlay} />
       </ClickableTile>
@@ -53,7 +65,7 @@
   {/if}
   {#if getRecorder}
     {#if sound}
-      <div class="tileWrapper" on:click={() => (sound = null)}>
+      <div class="tileWrapper" on:click={() => dispatch('clear')}>
         <ClickableTile>
           <Icon class="icon" icon={faTimes} />
         </ClickableTile>

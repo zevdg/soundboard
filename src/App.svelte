@@ -10,6 +10,20 @@
     HeaderNavItem,
     SkipToContent,
   } from "carbon-components-svelte";
+  import firebase from "firebase/app";
+  import "firebase/auth";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAKMPjT87uORMerVlQvrvDy5QaHtJbtZI4",
+    authDomain: "mysoundboards.firebaseapp.com",
+    projectId: "mysoundboards",
+    storageBucket: "mysoundboards.appspot.com",
+    messagingSenderId: "1028333641268",
+    appId: "1:1028333641268:web:1c5493259aed7c067c7461",
+  };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
 
   export let url = "";
 </script>

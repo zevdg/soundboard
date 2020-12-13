@@ -22,7 +22,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-export const recordAudio = () =>
+export const recordAudio = (onStop) =>
   new Promise(async (resolve) => {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
     const mediaRecorder = new MediaRecorder(stream)
@@ -37,17 +37,14 @@ export const recordAudio = () =>
     const stop = () =>
       new Promise((resolve) => {
         mediaRecorder.addEventListener('stop', () => {
-          const audioBlob = new Blob(audioChunks)
-          const audioUrl = URL.createObjectURL(audioBlob)
-          const audio = new Audio(audioUrl)
-          const play = () => audio.play()
-          resolve({ audioBlob, audioUrl, play })
+          onStop({
+            mediaRecorder,
+            blob: new Blob(audioChunks),
+          })
         })
 
         mediaRecorder.stop()
       })
 
-    const getState = () => mediaRecorder.state
-
-    resolve({ start, stop, getState })
+    resolve({ start, stop })
   })
