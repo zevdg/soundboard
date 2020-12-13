@@ -2,7 +2,7 @@
   import SoundTile from "./SoundTile.svelte";
   import { createEventDispatcher } from "svelte";
 
-  export let sounds;
+  export let audioSrcs;
   export let getRecorder;
 
   const dispatch = createEventDispatcher();
@@ -28,9 +28,9 @@
 </style>
 
 <div class="board">
-  {#each sounds as sound, idx}
+  {#each audioSrcs as audioSrc, idx}
     <SoundTile
-      {sound}
+      {audioSrc}
       getRecorder={indexedGetRecorder(idx)}
       on:clear={() => dispatch('clear', { idx })} />
   {/each}

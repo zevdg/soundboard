@@ -9,7 +9,7 @@
   export let boardId;
   export let ownerId;
 
-  async function loadSounds() {
+  async function getAudioSrcs() {
     const soundsRef = firebase
       .storage()
       .ref(`users/${ownerId}/boards/${boardId}/sounds`);
@@ -21,6 +21,6 @@
 
 <h1>I am board id {ownerId}/{boardId}</h1>
 <Button on:click={() => navigate(`/b/${boardId}/edit`)}>Edit</Button>
-{#await loadSounds() then sounds}
-  <Board {sounds} />
+{#await getAudioSrcs() then audioSrcs}
+  <Board {audioSrcs} />
 {/await}

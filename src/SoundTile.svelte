@@ -6,12 +6,12 @@
   import { faPlay } from "@fortawesome/free-solid-svg-icons/faPlay";
   import { faTimes } from "@fortawesome/free-solid-svg-icons/faTimes";
   export let getRecorder;
-  export let sound;
+  export let audioSrc;
 
   const dispatch = createEventDispatcher();
 
   const audio = new Audio();
-  $: audio.src = sound;
+  $: audio.src = audioSrc;
 
   let recording = false;
 
@@ -51,7 +51,7 @@
 </style>
 
 <div class="SoundTile">
-  {#if sound}
+  {#if audioSrc}
     <div class="tileWrapper" on:click={() => audio.play()}>
       <ClickableTile>
         <Icon class="icon" icon={faPlay} />
@@ -59,7 +59,7 @@
     </div>
   {/if}
   {#if getRecorder}
-    {#if sound}
+    {#if audioSrc}
       <div class="tileWrapper" on:click={() => dispatch('clear')}>
         <ClickableTile>
           <Icon class="icon" icon={faTimes} />

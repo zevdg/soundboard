@@ -8,13 +8,7 @@
   import "firebase/auth";
   import "firebase/storage";
 
-  firebase.auth().onAuthStateChanged((user) => {
-    if (user) {
-      console.log("logged in as ", user);
-    } else {
-      console.log("Not logged in");
-    }
-  });
+  firebase.auth().onAuthStateChanged(() => {}); // check for login
 
   async function signIn() {
     const result = await firebase
@@ -31,13 +25,12 @@
   const sounds = new Array(9);
   const recorders = new Array(9);
 
-  $: soundUrls = sounds.map((s) => URL.createObjectURL(s.blob));
-
   async function getRecorder(idx) {
     if (!recorders[idx]) {
       recorders[idx] = await recordAudio(({ blob, mediaRecorder }) => {
         sounds[idx] = {
           blob,
+          url: URL.createObjectURL(blob),
           mimeType: mediaRecorder.mimeType,
         };
       });
@@ -67,5 +60,8 @@
 </script>
 
 <p>Press and hold to record.</p>
-<Board sounds={soundUrls} {getRecorder} on:clear={clearSound} />
+<Board
+  audioSrcs={sounds.map((s) => s?.url)}
+  {getRecorder}
+  on:clear={clearSound} />
 <Button on:click={saveBoard}>Save</Button>
