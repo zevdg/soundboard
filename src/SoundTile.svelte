@@ -11,12 +11,7 @@
   const dispatch = createEventDispatcher();
 
   const audio = new Audio();
-  $: if (sound) {
-    console.log({ sound });
-    const audioUrl = URL.createObjectURL(sound.blob);
-    audio.src = audioUrl;
-    console.log({ audio });
-  }
+  $: audio.src = sound;
 
   let recording = false;
 

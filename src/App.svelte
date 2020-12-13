@@ -54,13 +54,13 @@
     </HeaderNav>
   </Header>
   <Content id="app-content">
-    <Route path="b/:id/*" let:params>
+    <Route path="create">
+      <BoardEdit />
+    </Route>
+    <Route path="b/:ownerId/:boardId/*" let:params>
       <Router>
-        <Route path="edit">
-          <BoardEdit id={params.id} />
-        </Route>
         <Route path="/">
-          <BoardView id={params.id} />
+          <BoardView ownerId={params.ownerId} boardId={params.boardId} />
         </Route>
       </Router>
     </Route>

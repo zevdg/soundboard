@@ -8,6 +8,14 @@
   import "firebase/auth";
   import "firebase/storage";
 
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      console.log("logged in as ", user);
+    } else {
+      console.log("Not logged in");
+    }
+  });
+
   async function signIn() {
     const result = await firebase
       .auth()
@@ -18,10 +26,12 @@
   async function getCurrentUser() {
     return firebase.auth().currentUser || (await signIn());
   }
-  export let id;
+  const boardId = uuidv4();
 
-  let sounds = new Array(9);
-  let recorders = new Array(9);
+  const sounds = new Array(9);
+  const recorders = new Array(9);
+
+  $: soundUrls = sounds.map((s) => URL.createObjectURL(s.blob));
 
   async function getRecorder(idx) {
     if (!recorders[idx]) {
@@ -39,14 +49,15 @@
     const user = await getCurrentUser();
     const soundsRef = firebase
       .storage()
-      .ref(`/users/${user.uid}/boards/${id}/sounds`);
-    for (const recoreder of recorders) {
-      if (recorder) {
-        soundsRef
-          .child(uuidv4())
-          .put(recorder.audioBlob, { contentType: "image/jpeg" });
-      }
-    }
+      .ref(`/users/${user.uid}/boards/${boardId}/sounds`);
+    await Promise.allSettled(
+      sounds.filter(Boolean).map((sound, idx) =>
+        soundsRef.child(idx.toString()).put(sound.blob, {
+          contentType: sound.mimeType,
+        })
+      )
+    );
+    navigate(`/b/${user.uid}/${boardId}`);
   }
 
   function clearSound(event) {
@@ -56,5 +67,5 @@
 </script>
 
 <p>Press and hold to record.</p>
-<Board {id} {sounds} {getRecorder} on:clear={clearSound} />
-<Button on:click={() => navigate(`/b/${id}`)}>Save</Button>
+<Board sounds={soundUrls} {getRecorder} on:clear={clearSound} />
+<Button on:click={saveBoard}>Save</Button>
