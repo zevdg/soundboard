@@ -1,7 +1,6 @@
 <script>
   import Board from "./Board.svelte";
-  import { Button } from "carbon-components-svelte";
-  import { navigate } from "svelte-routing";
+  import { Loading } from "carbon-components-svelte";
   import firebase from "firebase/app";
   import "firebase/auth";
   import "firebase/storage";
@@ -20,6 +19,8 @@
 </script>
 
 <!-- <Button on:click={() => navigate(`/b/${boardId}/edit`)}>Edit</Button> -->
-{#await getAudioSrcs() then audioSrcs}
+{#await getAudioSrcs()}
+  <Loading />
+{:then audioSrcs}
   <Board {audioSrcs} />
 {/await}
