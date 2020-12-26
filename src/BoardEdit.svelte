@@ -22,8 +22,8 @@
   }
   const boardId = uuidv4();
 
-  const sounds = new Array(9);
-  const recorders = new Array(9);
+  const sounds = new Array(1);
+  const recorders = new Array(1);
 
   async function getRecorder(idx) {
     if (!recorders[idx]) {
@@ -33,6 +33,10 @@
           url: URL.createObjectURL(blob),
           mimeType: mediaRecorder.mimeType,
         };
+        if (idx === sounds.length - 1) {
+          sounds.push(null);
+          recorders.push(null);
+        }
       });
     }
     return recorders[idx];

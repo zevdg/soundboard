@@ -19,8 +19,7 @@
   }
 </script>
 
-<h1>I am board id {ownerId}/{boardId}</h1>
-<Button on:click={() => navigate(`/b/${boardId}/edit`)}>Edit</Button>
+<!-- <Button on:click={() => navigate(`/b/${boardId}/edit`)}>Edit</Button> -->
 {#await getAudioSrcs() then audioSrcs}
   <Board {audioSrcs} />
 {/await}
